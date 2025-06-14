@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Maps</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.32/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.32/"></script>
+  </head>
+  <body>
+    <div id="title">Population Map</div>
+    <div id="myMap">
+      <div id="informationTab" class="esri-widget">
+        <h2 id="infoText">Tagum City</h2>
+        <p>This is the population census of the city on 2020</p>
+        <p>Data is from Philippine Statistic Authority</p>
+
+        <div id="queryItem"></div>
+        <button id="clearButton" class="esri-widget">Reset</button>
+      </div>
+      <div id="querySection" class="esri-widget">
+        <h2>Find Location</h2>
+        <select name="list" id="selectList" class="esri-widget"></select>
+        <button id="queryButton" class="esri-widget">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M10.035,18.069a7.981,7.981,0,0,0,3.938-1.035l3.332,3.332a2.164,2.164,0,0,0,3.061-3.061l-3.332-3.332A8.032,8.032,0,0,0,4.354,4.354a8.034,8.034,0,0,0,5.681,13.715ZM5.768,5.768A6.033,6.033,0,1,1,4,10.035,5.989,5.989,0,0,1,5.768,5.768Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="footer">
+      <p>©Joshua De Leon 2025</p>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
