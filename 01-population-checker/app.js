@@ -220,7 +220,7 @@ require([
           <p>It has a population of ${selectItem.pop_Popula} 
           with an area of ${selectItem.AREA_SQKM.toFixed(2)} sqkm </p> 
           <br> <img src="${selectItem.img_url}" 
-          style="height:300px; width:400px;" />`;
+          style="height:220px; width:320px;" />`;
 
           queryItemDiv.innerHTML = queryItem;
 
