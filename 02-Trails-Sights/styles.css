@@ -1,0 +1,83 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#myView{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex: 1;
+}
+
+/* .esri-widget--panel{
+  width: 200px !important;
+} */
+
+#query-container {
+  background-color: white;
+  padding: 20px;
+}
+
+
+/* for calcite */
+body {
+  display: flex;
+}
+
+calcite-loader {
+  align-self: center;
+  justify-self: center;
+}
+
+#info-content {
+  padding: 0.75rem;
+}
+
+calcite-rating {
+  margin-top: 0.25rem;
+}
+
+#viewChart {
+  background: white;
+  width: 400px;
+  max-width: 400px;
+  height: 300px;
+  max-height: 300px;
+  top: 10px;
+  right: 20px;
+}
+
+#viewChartContainer{
+  width: 300px;
+  height: 300px;
+  display: none
+}
+
+#featureTable {
+  position: absolute;
+  width: 200px;
+  max-height: 3000px;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+table {
+  border-collapse: collapse;
+  min-width: 1200px;
+  width: max-content;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #049faa;
+  color: white;
+}
