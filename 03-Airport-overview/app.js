@@ -47,7 +47,7 @@ require([
     constraints: {
       geometry: philippinesExtent,
       minZoom: 2,
-      maxZoom: 15
+      maxZoom: 22
     },
   });
 
