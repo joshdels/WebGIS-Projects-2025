@@ -6,7 +6,7 @@ free deployed website
 https://my-website-fiyc.onrender.com/
 
 ## Screenshot
-![Cafe](img/porfolio.jpg)
+![Cafe](img/porfolio.PNG)
 
 ## ✨ Features
 List some key features:
