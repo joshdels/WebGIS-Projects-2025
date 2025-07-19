@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#myMap {
+  position: absolute;
+  top: 56px; 
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* for cluster styles */
+.custom-cluster {
+  background-color: rgba(0, 0, 0, 0.6); 
+  color: white;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: bold;
+  border: 2px solid black;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.custom-cluster div {
+  border-radius: 50%;
+}
+
+.info.legend {
+  background: white;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  line-height: 24px;
+}
