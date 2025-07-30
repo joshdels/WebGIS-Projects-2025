@@ -8,5 +8,5 @@ these are my webgis Projects for 2025, This will serve as my learning progress a
   <li> Airport Overview - https://joshdels.github.io/WebGIS-Projects-2025/03-Airport-overview/  </li>
   <li> Porfolio - https://my-website-fiyc.onrender.com/ </li>
   <li> Cafe Explorer -  </li>
-  <li> Study Area - 
+  <li> Study Area - https://web-gis-projects-2025.vercel.app/ </li>
 </ol>
