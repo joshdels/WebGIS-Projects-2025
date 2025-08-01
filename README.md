@@ -1,5 +1,5 @@
 ## WebGIS-Projects-2025
-these are my webgis Projects for 2025, This will serve as my learning progress as I continue to evolve for years
+These are my webgis Projects for 2025, This will serve as my learning progress as I continue to evolve for years
 <hr>
 
 <ol>
