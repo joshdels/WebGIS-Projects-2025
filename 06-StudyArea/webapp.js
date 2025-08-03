@@ -1,4 +1,3 @@
-// test is a test update for github?
 let map = L.map('map').setView([0, 0], 4);
 
 // Base Maps
