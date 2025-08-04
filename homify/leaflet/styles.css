@@ -6,6 +6,7 @@ html, body {
 }
 
 #map { 
+<<<<<<< HEAD
   height: calc(100vh - 68px); 
   margin: 0;
 }
@@ -30,4 +31,13 @@ html, body {
     width: 75%;  /* Tablet and up */
     max-width: 900px; /* Optional cap */
   }
+=======
+  flex: 2;
+  height: calc(100vh); 
+  margin: 0
+}
+
+#sidebar{
+  flex: 1
+>>>>>>> b75e0249b40d999ca3a07dc69ad987ce2c266c93
 }
