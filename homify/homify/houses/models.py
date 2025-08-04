@@ -19,3 +19,4 @@ class Locations(models.Model):
    contact = models.CharField(max_length=255, null=True, blank=True)
    
    geom = models.PointField(srid=4326)
+   #test
