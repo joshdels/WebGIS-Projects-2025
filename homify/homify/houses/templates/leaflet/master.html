@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Libraries -->
+  <link rel="stylesheet" href="{% static 'leaflet/styles.css' %}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.13.0/dist/leaflet-geoman.css" rel="stylesheet" />
+  <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.13.0/dist/leaflet-geoman.min.js"></script>
+  
+  <link rel="icon" href="{% static 'leaflet/img/house-storm-svgrepo-com.svg' %}" type="image/svg+xml">
+  <link rel="shortcut icon" href="{% static 'leaflet/img/favicon.ico' %}" type="image/x-icon">
+
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+  
+  <nav class="navbar navbar-expand-lg bg-body-tertiary p-2 border-bottom custom-navbar">
+    <div class="container-fluid">
+      <img src="{% static 'leaflet/img/house-storm-svgrepo-com.svg' %}" alt="Logo" width="40" height="50" class="d-inline-block align-text-top">
+      <span class="navbar-brand" href="#">Homify</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="ms-auto">
+          <a href="#" class="nav-link active start-end">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  {% block content %} {% endblock %}
+
+
+</body>
+  <!-- extensions -->
+  <script src="{% static 'leaflet/lib/print-leaflet.js' %}"></script>
+  <script src="{% static 'leaflet/app.js' %}"></script>
+  
+</html>

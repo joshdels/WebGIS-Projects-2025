@@ -1,0 +1,80 @@
+{% extends "leaflet/master.html" %} 
+{% load static %}
+{% block title %} Homify {% endblock %} 
+
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row flex-column flex-md-row">
+      <!-- MAP -->
+      <div class="col-12 col-md-8 order-1 order-md-2 p-0" id="map"></div>
+      
+      <!-- SIDEBAR -->
+      <div class="col-12 col-md-4 order-1 order-md-2 p-4 bg-white shadow-lg" id="sidebar">
+        <div class="mb-4 border-bottom pb-2">
+          <span class="fw-bold fs-5 mb-1">📋 Listing</span>
+          <p class="text-muted fs-6 mb-0 text-sm">Available properties: {{ locations|length }} units</p>
+        </div>
+
+        <!-- CARDS: Always 2 columns -->
+        <div class="row row-cols-2 g-3" id="cardContainer">
+            {% for location in locations %}
+              <div class="col">
+                <div class="card h-100">
+                  <img src="{% static 'leaflet/img/istockphoto-876864896-612x612.jpg' %}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <p class="card-text">Some quick example text for card 1.</p>
+                    <p class="card-text"> {{ location.id }}</p>
+                    <p class="card-text"> this is type  {{ location.properties.type }}</p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen d-flex align-items-center justify-content-center">
+      <div class="modal-content modal-custom w-100 mx-2 mx-sm-4 overflow-y-auto">
+        <div class="modal-header">
+          <img src="{% static 'leaflet/img/house-storm-svgrepo-com.svg' %}" alt="Logo" width="40" height="50" class="d-inline-block align-text-top">
+          <span class="navbar-brand" href="#">Homify</span>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="container-fluid" id="property-image">
+            <img src="{% static 'leaflet/img/istockphoto-876864896-612x612.jpg' %}" alt="">
+          </div>
+          <div class="container-fluid" id="property-header-details">
+            <h1>This is Details</h1>
+          </div>
+          <div class="container-fluid" id="property-information">
+            <h3>Information</h3>
+            <p>asdfasdfa sdfa sd</p>
+          </div>
+          <div class="container-fluid" id="property-owner">
+            <h4>About the owner</h4>
+          </div>
+          <div class="d-flex align-items-center p-3 bg-light border rounded">
+            <i class="bi bi-telephone-fill fs-4 me-3 text-primary"></i>
+            <div>
+              <div class="fw-bold">Contact Number</div>
+              <div class="text-muted">+63 912 345 6789</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

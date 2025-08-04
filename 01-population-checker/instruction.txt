@@ -1,0 +1,6 @@
+1. tagum population data - done
+2. basemaps - done
+3. Search finder population - done
+4. click details - done
+5. query all data - done
+6. set a side grid with data information

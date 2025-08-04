@@ -1,0 +1,112 @@
+  {% extends "master.html" %}
+  {% load static %}
+
+  {% block title %}
+    Homepage
+  {% endblock %}
+
+  {% block content %}
+  <!-- insert text -->
+  <style>
+    html, body {
+      overflow: hidden;
+    }
+  </style>
+  
+  {% if error and not success %}
+    {% if error|length > 0 %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <div class="container-fluid p-3">
+  <div class="row">
+      <div class="container col-8 ps-5 pe-5">
+        <h1>Need Help?</h1>
+
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-1 mt-1">
+            <label for="first_name" class="form-label">First Name:</label>
+            <input type="text" class="form-control" id="first_name" placeholder="" name="first_name" required>
+          </div>
+          <div class="mb-1 mt-1">
+            <label for="last_name" class="form-label">Last Name:</label>
+            <input type="text" class="form-control" id="last_name" placeholder="" name="last_name" required>
+          </div>
+          <label for="role" class="form-label">Position:</label>
+          <select class="form-select mb-2" name="role" id="role" required>
+            <option value="" selected disabled>Please select</option>
+            <option value="Student">Student</option>
+            <option value="Academic / Researcher">Academic / Researcher</option>
+            <option value="GIS Analyst">GIS Analyst</option>
+            <option value="GIS Developer">GIS Developer</option>
+            <option value="Engineer / Planner">Engineer / Planner</option>
+            <option value="Environmental Consultant">Environmental Consultant</option>
+            <option value="LGU (Local Government Unit)">LGU (Local Government Unit)</option>
+            <option value="National Government Agency (e.g. DENR, NAMRIA, DOST)">National Government Agency</option>
+            <option value="NGO / Non-profit Organization">NGO / Non-profit Organization</option>
+            <option value="Private Company">Private Company</option>
+            <option value="Freelancer">Freelancer</option>
+            <option value="Manager / Decision-Maker">Manager / Decision-Maker</option>
+            <option value="Urban or Regional Planner">Urban or Regional Planner</option>
+            <option value="Utility / Infrastructure Provider">Utility / Infrastructure Provider</option>
+            <option value="Disaster Risk Manager">Disaster Risk Manager</option>
+            <option value="Other">Other</option>
+          </select>
+          <div class="mb-1">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" placeholder="" name="email" required>
+          </div>
+          <div class="mb-1">
+            <label for="comment" class="form-label">Your Spatial Problems</label>
+            <textarea class="form-control" id="comment" name="comment" rows="5" placeholder="Write your inquiries here"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">Submit</button>
+        </form>
+      </div>  
+
+
+      <div class="container-fluid col-4 bg-body-tertiary">
+        <h1 class="pb-3">My Location</h1>
+        <div id="map" style="height: 450px"></div>
+      </div>
+    </div>
+  </div>
+
+
+  {% if success %}
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="myModalLabel">Thank You!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Your message was sent <strong>Successfully!</strong> please wait atleast 24hrs for the response
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+        myModal.show();
+      });
+    </script>
+  {% endif %}
+
+
+
+    <script src="{% static 'leaflet.js' %}"></script>
+
+  {% endblock %}

@@ -1,0 +1,33 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+#map { 
+  height: calc(100vh - 68px); 
+  margin: 0;
+}
+
+#sidebar{
+  height: calc(100vh - 68px); 
+  overflow-y: auto;
+}
+
+.custom-navbar {
+  position: relative;
+  border-bottom: 2px solid #333; /* make the border more visible if needed */
+}
+
+.modal-custom {
+  width: 100%; /* Mobile default: full width */
+  margin: auto;
+}
+
+@media (min-width: 400px) {
+  .modal-custom {
+    width: 75%;  /* Tablet and up */
+    max-width: 900px; /* Optional cap */
+  }
+}

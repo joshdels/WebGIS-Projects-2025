@@ -1,0 +1,66 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+  Homepage
+{% endblock %}
+
+{% block content %}
+<!-- insert text -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Poppins:400,500,600,700" rel="stylesheet"> 
+<section class="experience pt-20 pb-100" id="experience">
+    
+		<div class="container">
+
+
+			<div class="row mb-4">
+        <div class="col-2">
+          <img id="myProfile" src="{% static 'profile.jpg' %}" alt="my_img">
+        </div>
+        <div class="col-3 mt-5">
+          <h1>Joshua De Leon</h1>
+          <p>Web GIS Fullstack Developer / GIS Analyst </p>
+        </div>
+        <div class="col-7 mt-4 text-end">
+          <p id="motto"> from Philippines with a degree of Agricultural and Biosystems Engineer, he takes the leap to become a Geospatial Technician (GIS) using Desktop GIS tools. Later on, he pushed himself to become a Web GIS Fullstack Developer to upgrade his skills and career progression</p>
+          <figcaption class="blockquote-footer">
+            <p> "I simplify Complex Spatial Problems with Tailored Answers for the client" </p>
+          </figcaption>
+        </div>
+        <hr>
+			</div>
+
+			<div class="row">
+        <div class="col-xl-12">
+          <h2 class="text-center pt-20 pb-50">Experience</h2>
+            <ul class="timeline-list">
+              {% for experience in experiences %}
+              <li>
+                <div class="timeline_content">
+                  <span>{{ experience.date_joined|date:"F Y" }} - {{ experience.date_ended|date:"F Y" }}</span>
+                  <div class="row">
+                    {% if forloop.counter|divisibleby:2 %}
+                      <!-- Even item: image left, text right -->
+                      <div class="col">
+                        <h4>{{ experience.position }}</h4>
+                        <p>{{ experience.location }}</p>
+                      </div>
+                    {% else %}
+                      <!-- Odd item: text left, image right -->
+                      <div class="col">
+                        <h4>{{ experience.position }}</h4>
+                        <p>{{ experience.location }}</p>
+                      </div>
+                    {% endif %}
+                  </div>
+                  <p>{{ experience.roles }}</p>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+        </div>
+      </div>
+		</div>
+	  </section>
+ 
+{% endblock %}

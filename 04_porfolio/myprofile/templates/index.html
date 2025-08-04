@@ -1,0 +1,44 @@
+{% extends "master.html" %} 
+{% load static %}
+{% block title %} Homepage {% endblock %} 
+
+{% block content %}
+<style>
+  html, body {
+    overflow: hidden;
+  }
+</style>
+
+<!-- insert text -->
+<div class="container-fluid p-4">
+  <div class="container px-4 px-lg-5">
+    <!-- Heading Row-->
+    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+      <div class="col-lg-7">
+        <iframe
+          src="https://joshdels.github.io/WebGIS-Projects-2025/03-Airport-overview/"
+          class="w-100 rounded"
+          width="900"
+          height="900"
+          style="border: none; height: 70vh;"
+          scrols=""
+          allowfullscreen
+        >
+        </iframe>
+      </div>
+      <div class="col-lg-5">
+        <h1 class="font-weight-light">TopMap Solutions</h1>
+        <p>
+          Is a collection of <strong>Joshua De Leon</strong> projects,
+          experience GIS Web Developer / GIS Analyst as he embark this unique
+          Geospatial journey.
+        </p>
+        <a class="btn btn-primary" href="{% url 'contact' %}"
+          >Want to Consult with me?</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

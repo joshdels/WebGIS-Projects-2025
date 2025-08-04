@@ -1,0 +1,44 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Homepage
+{% endblock %}
+
+{% block content %}
+<!-- insert text -->
+  <div class="row mb-4">
+    <h4>Projects</h4>
+    <p>These are my projects that I will showcase, free free to enjoy</p>
+    <hr>
+  </div>
+
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row">
+      </div>
+      <div class="row">
+        {% for project in projects %}
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img src="{{ project.image.url }}" class="card-img-top" alt="Project Logo" width="100%" height="225" style="object-fit: cover;">
+              <div class="card-body">
+                <h4> {{ project.name }}</h4>
+                <p class="card-text">{{ project.content }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="badge bg-primary">{{ project.tags }}</span>
+                  <small class="text-muted">{{ project.pub_date|date:"F j, Y" }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+ 
+      </div>
+    </div>
+  </div>
+
+
+ </div>
+ 
+{% endblock %}

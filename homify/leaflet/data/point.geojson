@@ -1,0 +1,19 @@
+{
+"type": "FeatureCollection",
+"name": "point",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.72875676386532, 7.412970766117446 ] } },
+{ "type": "Feature", "properties": { "id": 2, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.730249020717579, 7.439333970507426 ] } },
+{ "type": "Feature", "properties": { "id": 3, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.689460666755735, 7.440328808408935 ] } },
+{ "type": "Feature", "properties": { "id": 4, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.81431282339507, 7.386110142776714 ] } },
+{ "type": "Feature", "properties": { "id": 5, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.812323147592053, 7.398545616545571 ] } },
+{ "type": "Feature", "properties": { "id": 6, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.768550279925662, 7.415457860871219 ] } },
+{ "type": "Feature", "properties": { "id": 1, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.802623478052325, 7.426152368312437 ] } },
+{ "type": "Feature", "properties": { "id": 1, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.784965105300543, 7.383871757498319 ] } },
+{ "type": "Feature", "properties": { "id": 2, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.771286084154795, 7.440826227359689 ] } },
+{ "type": "Feature", "properties": { "id": 3, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.778498658940734, 7.457241052734582 ] } },
+{ "type": "Feature", "properties": { "id": 4, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.769793827302536, 7.455002667456188 ] } },
+{ "type": "Feature", "properties": { "id": 5, "owner": null, "parcel_id": null, "status": null }, "geometry": { "type": "Point", "coordinates": [ 125.75984544828745, 7.384866595399828 ] } }
+]
+}

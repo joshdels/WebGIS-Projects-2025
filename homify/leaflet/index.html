@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Libraries -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.13.0/dist/leaflet-geoman.css" rel="stylesheet" />
+  <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.13.0/dist/leaflet-geoman.min.js"></script>
+  
+  <link rel="icon" href="./img/house-storm-svgrepo-com.svg" type="image/svg+xml">
+  <title>Homify</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary p-2 border-bottom custom-navbar">
+    <div class="container-fluid">
+      <img src="./img/house-storm-svgrepo-com.svg" alt="Logo" width="40" height="50" class="d-inline-block align-text-top">
+      <span class="navbar-brand" href="#">Homify</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="ms-auto">
+          <a href="#" class="nav-link active start-end">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row flex-column flex-md-row">
+      <!-- MAP -->
+      <div class="col-12 col-md-8 order-1 order-md-2 p-0" id="map"></div>
+      
+      <!-- SIDEBAR -->
+      <div class="col-12 col-md-4 order-1 order-md-2 p-4 bg-white shadow-lg" id="sidebar">
+        <div class="mb-4 border-bottom pb-2">
+          <span class="fw-bold fs-5 mb-1">📋 Listing</span>
+          <p class="text-muted fs-6 mb-0 text-sm">Available properties</p>
+        </div>
+
+        <!-- CARDS: Always 2 columns -->
+          <div class="row row-cols-2 g-3" id="cardContainer">
+            
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 1.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <img src="./img/istockphoto-876864896-612x612.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text for card 2.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen d-flex align-items-center justify-content-center">
+      <div class="modal-content modal-custom w-100 mx-2 mx-sm-4 overflow-y-auto">
+        <div class="modal-header">
+          <img src="./img/house-storm-svgrepo-com.svg" alt="Logo" width="40" height="50" class="d-inline-block align-text-top">
+          <span class="navbar-brand" href="#">Homify</span>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="container-fluid" id="property-image">
+            <img src="./img/istockphoto-876864896-612x612.jpg" alt="">
+          </div>
+          <div class="container-fluid" id="property-header-details">
+            <h1>This is Details</h1>
+          </div>
+          <div class="container-fluid" id="property-information">
+            <h3>Information</h3>
+            <p>asdfasdfa sdfa sd</p>
+          </div>
+          <div class="container-fluid" id="property-owner">
+            <h4>About the owner</h4>
+          </div>
+          <div class="d-flex align-items-center p-3 bg-light border rounded">
+            <i class="bi bi-telephone-fill fs-4 me-3 text-primary"></i>
+            <div>
+              <div class="fw-bold">Contact Number</div>
+              <div class="text-muted">+63 912 345 6789</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="./lib/print-leaflet.js"></script>
+<script src="app.js"></script>
+</html>

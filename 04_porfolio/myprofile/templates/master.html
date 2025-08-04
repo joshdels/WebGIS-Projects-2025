@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="crossorigin=""/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    {% load django_bootstrap5 %} 
+    {% bootstrap_css %} 
+    {% bootstrap_javascript %}
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  
+  <body>
+    <!-- Navigation -->
+     <div class="main-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <img src="{% static 'gis.jpg' %}" alt="img" style="width:60px" class="rounded me-3">
+          <a class="navbar-brand" href="{% url 'homepage' %}">TopMap Solution</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'project' %}">Projects</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'about_me' %}">About Me</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'contact' %}">Consult Me</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div class="content container mt-4">
+        {% block content %} {% endblock %}
+      </div>
+        
+      <!-- footer -->
+      <footer class="text-center text-body-secondary border-top p-1">
+        © 2025 TopMap Solution
+      </footer>
+    </div>
+    
+  </body>
+  
+</html>
