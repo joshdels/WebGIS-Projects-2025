@@ -109,9 +109,6 @@ map.on('pm:create', e => {
     // 1. Add marker immediately for instant feedback
     layer.addTo(map);
 
-    // 2. Set temporary style (e.g., yellow) to show "saving"
-    layer.setStyle({ fillColor: "yellow" });
-
     // 3. Prepare data to send
     const geojson = layer.toGeoJSON();
     const data = { geometry: geojson.geometry };
@@ -128,18 +125,13 @@ map.on('pm:create', e => {
     .then(res => res.json())
     .then(data => {
       if (data.status === 'success') {
-        // 5a. On success, update marker style to green
-        layer.setStyle({ fillColor: "green" });
+        console.log('Success')
       } else {
         // 5b. On failure, update to red and alert
-        layer.setStyle({ fillColor: "red" });
-        alert('Error saving location: ' + data.message);
+        console.log('Success')
       }
     })
     .catch(err => {
-      // 6. On network error, mark red & alert
-      layer.setStyle({ fillColor: "red" });
-      alert('Network error saving location');
       console.error(err);
     });
   }

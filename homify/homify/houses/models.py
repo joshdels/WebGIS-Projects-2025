@@ -14,16 +14,16 @@ class Boundaries(models.Model):
    
 class Locations(models.Model):
    address = models.CharField(max_length=300, null=True, blank=True)
-   no_unit = models.IntegerField(null=True, blank=True)
+   no_units = models.IntegerField(null=True, blank=True)
    status = models.CharField(max_length=255, null=True, blank=True) 
    type = models.CharField(max_length=255, null=True, blank=True)
-   area_per_sqm = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+   area_sqm = models.IntegerField(null=True, blank=True)
    no_rooms = models.IntegerField(null=True, blank=True)
    available = models.CharField(max_length=255, null=True, blank=True)
    phone = models.CharField(max_length=255, null=True, blank=True)
    email = models.EmailField(null=True, blank=True)
    website = models.URLField(null=True, blank=True)
-   price_per_month = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+   rent_per_month = models.IntegerField(null=True, blank=True)
    
    geom = models.PointField(srid=4326)
    

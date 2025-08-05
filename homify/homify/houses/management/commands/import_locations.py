@@ -7,11 +7,22 @@ class Command(BaseCommand):
   
   def handle(self, *args, **kwargs):
     location_mapping = {
+      'address': 'address',
+      'no_units': 'no_units',
       'status': 'status',
+      'type': 'type',
+      'area_sqm': 'area_sqm',
+      'no_rooms': 'no_rooms',
+      'available': 'available',
+      'phone': 'phone',
+      'email': 'email',
+      'website': 'website',
+      'rent_per_month': 'rent_per_month',
       'geom': 'POINT',
     }
+    
     # change this if shp/geojson is changed
-    shp_path = r'D:\1. PROJECT\Webgis\homify\point.geojson'
+    shp_path = r'D:\1. PROJECT\Webgis\homify\update_file.geojson'
     
     lm = LayerMapping(
       Locations,
