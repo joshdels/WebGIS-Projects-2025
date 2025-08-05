@@ -1,14 +1,19 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
-from .models import Boundaries, Locations
+from django.contrib.gis.geos import GEOSGeometry
 from django.core.serializers import serialize
-import geopandas as gpd
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Boundaries, Locations
 
 # Create your views here.
 def homepage(request):
   location = Locations.objects.all()
   return render(request, './leaflet/index.html', {'locations':location})
+
+def user_dashboard(request):
+  return render(request, './user/dashboard.html')
 
 def location_data(request):
   location = Locations.objects.all()
@@ -18,6 +23,22 @@ def location_data(request):
 def boundary_data(request):
   boundary = Boundaries.objects.all()
   geojson = serialize('geojson', boundary)
-  return HttpResponse(geojson, content_type='applocation/json')
+  return HttpResponse(geojson, content_type='application/json')
 
-  
+@csrf_exempt
+def save_location(request):
+  if request.method == 'POST':
+    try:
+      data = json.loads(request.body)
+      geometry = data.get('geometry')
+      
+      geom = GEOSGeometry(json.dumps(geometry))
+      location = Locations.objects.create(
+        geom=geom
+      )
+      return JsonResponse({'status': 'success', 'id': location.id})
+    
+    except Exception as e:
+      return JsonResponse({'status': 'error', 'message': str(e)})
+    
+  return JsonResponse({'status': 'error', 'message': 'POST request required'}, status=405)

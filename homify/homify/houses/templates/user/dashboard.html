@@ -1,0 +1,20 @@
+{% extends "leaflet/master.html" %} 
+{% load static %}
+{% block title %} Dashbord {% endblock %} 
+
+
+{% block content %} 
+<div class="container-fluid">
+  <div class="row flex-column flex-md-row">
+    <div class="col-12 col-md-6  p-0" id="privateMap"></div>
+    <div class="col-12 col-md-6  p-4 bg-white shadow-lg">
+      this is a sidebar??
+      wala lagiy sulod?? ahhsdf
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'leaflet/privateMap.js' %}"></script>
+<script src="{% static 'leaflet/lib/print-leaflet.js' %}"></script>
+
+{% endblock %}

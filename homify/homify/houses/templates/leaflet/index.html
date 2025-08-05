@@ -23,9 +23,9 @@
                 <div class="card h-100">
                   <img src="{% static 'leaflet/img/istockphoto-876864896-612x612.jpg' %}" class="card-img-top" alt="...">
                   <div class="card-body">
-                    <p class="card-text">Some quick example text for card 1.</p>
-                    <p class="card-text"> {{ location.id }}</p>
-                    <p class="card-text"> this is type  {{ location.properties.type }}</p>
+                    <h5 class="mb-2" id="card-header">₱500/month</h5>
+                    <p class="m-0 mb-1" id="card-text-1"> <strong>Studio</strong> | <strong>50</strong> sqm  | <strong>3</strong> beds</p>
+                    <p class="m-0" id="card-text-2"> 100 Philippines, Prk Apokon Tagum City, Davao del Norte</p>
                   </div>
                 </div>
               </div>
@@ -77,4 +77,5 @@
     </div>
   </div>
 
+  <script src="{% static 'leaflet/publicMap.js' %}"></script>
 {% endblock %}

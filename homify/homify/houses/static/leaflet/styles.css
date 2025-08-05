@@ -10,6 +10,11 @@ html, body {
   margin: 0;
 }
 
+#privateMap { 
+  height: calc(100vh - 68px); 
+  margin: 0;
+}
+
 #sidebar{
   height: calc(100vh - 68px); 
   overflow-y: auto;
@@ -30,4 +35,16 @@ html, body {
     width: 75%;  /* Tablet and up */
     max-width: 900px; /* Optional cap */
   }
+}
+
+#card-header {
+  font-weight: bold;
+}
+
+#card-text-1{
+  font-size: 13px;
+}
+
+#card-text-2{
+  font-size: 13px;
 }

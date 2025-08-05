@@ -3,7 +3,12 @@ let map = L.map('map', {
 }).setView([51.505, -0.09], 13);
 
 // Layers
+let locationLayer;
 $.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
+  if (locationLayer) {
+    map.removeLayer(locationLayer);
+  }
+
   let location = L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
       return L.circleMarker(latlng, {
@@ -19,11 +24,13 @@ $.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
       layer.bindPopup(
         `
         <div class="card shadow border-0" style="width: 100%; max-width: 18rem;">
-          <img src="" class="card-img-top img-fluid" alt="Preview image">
-          <div class="card-body">
-            <p class="card-text mb-2">
-              <strong>ID:</strong> ${feature.id}
-            </p>
+          <img src="{% static 'leaflet/img/istockphoto-876864896-612x612.jpg' %}" class="card-img-top img-fluid" alt="Preview image">
+             <div class="card-body">
+                <h5 class="mb-2" id="card-header">₱500/month</h5>
+                <p class="m-0 mb-1" id="card-text-1"> <strong>Studio</strong> | <strong>50</strong> sqm  | <strong>3</strong> beds</p>
+                <p class="m-0" id="card-text-2"> 100 Philippines, Prk Apokon Tagum City, Davao del Norte</p>
+              </div>
+            
             <button class="btn btn-primary open-modal-btn w-100" data-id="${feature.id}">View Details</button>
           </div>
         </div>
@@ -94,27 +101,6 @@ L.control.zoom({
   position: 'topright'
 }).addTo(map);
 
-//Adding draw functions
-map.pm.addControls({
-  position: 'topright',
-  oneBlock: true,
-  drawCircle: false,
-  drawPolygon: false,
-  drawPolyline: false,
-  drawCircleMarker: false,
-  drawRectangle: false,
-  drawMarker: true,
-  drawText: false,
-  cutPolygon: false,
-  rotateMode: false,
-  editMode: false,
-
-});
-
-map.on('pm:create', e => {
-  // console.log(JSON.stringify(e.layer.toGeoJSON()));
-});
-
 //Print
 L.easyPrint({	
   title: 'Print',
@@ -123,7 +109,6 @@ L.easyPrint({
   hideControlContainer: true,
   filename: 'homify-map',
 }).addTo(map);
-
 
 // Modals
 map.on('popupopen', function () {
@@ -139,24 +124,5 @@ map.on('popupopen', function () {
   }, 0);
 });
 
-
-document.addEventListener('DOMContentLoaded', function () {
-    const viewButtons = document.querySelectorAll('.view-btn');
-
-    viewButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        const type = button.getAttribute('data-type');
-        const contact = button.getAttribute('data-contact');
-        const id = button.getAttribute('data-id');
-
-        // Update modal content
-        document.querySelector('#property-header-details h1').textContent = `Details for ID ${id}`;
-        document.querySelector('#property-information p').textContent = `Type: ${type}`;
-        document.querySelector('#property-owner').innerHTML = `<h4>About the owner</h4>`;
-        document.querySelector('#property-owner').innerHTML += `<p>ID: ${id}</p>`;
-        document.querySelector('.text-muted').textContent = contact;
-      });
-    });
-  });
 
 
