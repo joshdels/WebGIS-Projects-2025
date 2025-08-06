@@ -48,3 +48,11 @@ html, body {
 #card-text-2{
   font-size: 13px;
 }
+
+#header-table{
+  overflow-x: auto;
+}
+
+#user-table{
+  white-space: nowrap;
+}

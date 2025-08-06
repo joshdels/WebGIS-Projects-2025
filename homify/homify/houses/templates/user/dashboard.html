@@ -8,8 +8,49 @@
   <div class="row flex-column flex-md-row">
     <div class="col-12 col-md-6  p-0" id="privateMap"></div>
     <div class="col-12 col-md-6  p-4 bg-white shadow-lg">
-      this is a sidebar??
-      wala lagiy sulod?? ahhsdf
+      <h3>Welcome Joshua De Leon </h3>
+      <div id="header-table">
+        <table class="table table-hover" id="user-table">
+          <thead>
+            <tr class="table-info">
+              <th>ID</th>
+              <th>Actions</th>
+              <th>Available</th>
+              <th>Type</th>
+              <th>Number of Unit</th>
+              <th>Rent</th>
+              <th>Address</th>
+              <th>Area</th>
+              <th>Number of Rooms</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Website</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for location in locations%}
+            <tr >
+                <td> {{ location.id }}</td>
+                <td> 
+                  <a href="">Edit</a>
+                </td>
+                <td> {{ location.available }}</td>
+                <td> {{ location.type }}</td>
+                <td> {{ location.no_units }}</td>
+                <td> {{ location.rent_per_month }}</td>
+                <td> {{ location.address }}</td>
+                <td> {{ location.area_sqm }}</td>
+                <td> {{ location.no_rooms }}</td>
+                <td> {{ location.phone }}</td>
+                <td> {{ location.email }}</td>
+                <td> {{ location.website }}</td>
+                <td> {{ location.status }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+      </div>
     </div>
   </div>
 </div>

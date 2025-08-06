@@ -9,11 +9,8 @@ from .models import Boundaries, Locations
 
 # Create your views here.
 def homepage(request):
-  location = Locations.objects.all()
-  return render(request, './leaflet/index.html', {'locations':location})
-
-def user_dashboard(request):
-  return render(request, './user/dashboard.html')
+  locations = Locations.objects.all()
+  return render(request, './leaflet/index.html', {'locations':locations})
 
 def location_data(request):
   location = Locations.objects.all()
@@ -42,3 +39,8 @@ def save_location(request):
       return JsonResponse({'status': 'error', 'message': str(e)})
     
   return JsonResponse({'status': 'error', 'message': 'POST request required'}, status=405)
+
+
+def user_dashboard(request):
+  locations = Locations.objects.all()
+  return render(request, './user/dashboard.html', {'locations':locations})
