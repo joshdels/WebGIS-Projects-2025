@@ -8,5 +8,6 @@ urlpatterns = [
   path('boundary-data/', views.boundary_data, name='boundary'),
   path('save-location/', views.save_location, name='save-location'),
   # for users
-  path('user-dashboard/', views.user_dashboard, name='user_dashboard')
+  path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
+  path('add_location/', views.add_location, name='add_location'),
 ]

@@ -1,0 +1,44 @@
+{% load static %}
+<form id="editForm" method="POST" enctype="multipart/form-data" action="{% url 'add_location' %}">
+<div class="modal-header">
+  <img src="{% static 'leaflet/img/house-storm-svgrepo-com.svg' %}" alt="Logo" width="40" height="50" class="d-inline-block align-text-top">
+  <span class="navbar-brand">Homify</span>
+  
+  <div class="w-100 text-center">
+    <h5 class="mb-0">Edit Property ID</h5>
+  </div>
+
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+  {% csrf_token %}
+  <div class="mb-3 table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+    {% for field in form %}
+      <tr>
+        <th scope="row" class="w-30"> {{ field.label_tag }} </th>
+        <td > 
+          {{ field }} 
+        </td>
+      </tr>
+    {% endfor  %}
+    <tr>
+      <th>Delete Property?</th>
+      <td>
+        <button type="button" class="btn btn-danger" disabled>
+          Delete
+        </button>
+      </td>
+    </tr>
+    </table>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary">Save</button>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+</div>
+</form>
+

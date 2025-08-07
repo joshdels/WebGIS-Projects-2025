@@ -10,7 +10,7 @@
     <div class="col-12 col-md-6  p-4 bg-white shadow-lg">
       <h3>Welcome Joshua De Leon </h3>
       <div id="header-table">
-        <table class="table table-hover" id="user-table">
+        <table class="table table-hover table-sm" id="user-table">
           <thead>
             <tr class="table-info">
               <th>ID</th>
@@ -30,10 +30,10 @@
           </thead>
           <tbody>
             {% for location in locations%}
-            <tr >
+            <tr>
                 <td> {{ location.id }}</td>
                 <td> 
-                  <a href="">Edit</a>
+                  <button class="btn btn-sm btn-primary edit-bt" data-id="{{ location.id }}">Edit</button>
                 </td>
                 <td> {{ location.available }}</td>
                 <td> {{ location.type }}</td>
@@ -54,6 +54,14 @@
     </div>
   </div>
 </div>
+
+  <!-- modal -->
+  <div class="modal fade" id="editModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
 
 <script src="{% static 'leaflet/privateMap.js' %}"></script>
 <script src="{% static 'leaflet/lib/print-leaflet.js' %}"></script>

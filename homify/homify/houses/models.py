@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from django.contrib.postgres.indexes import GistIndex 
 
+
 # Create your models here.
 class Boundaries(models.Model):
    adm3_en = models.CharField(max_length=255, null=True, blank=True)

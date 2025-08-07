@@ -162,4 +162,24 @@ L.easyPrint({
   filename: 'homify-map',
 }).addTo(map);
 
+// Modal
+document.querySelectorAll('.edit-bt').forEach(button=> {
+  button.addEventListener('click', () => {
+  const id = button.getAttribute('data-id');
+  console.log(id)
 
+  fetch('/add_location/', {
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.html) {
+      document.querySelector('#editModal .modal-content').innerHTML = data.html;
+      new bootstrap.Modal(document.getElementById('editModal')).show();
+    }
+  });
+});
+  
+})
