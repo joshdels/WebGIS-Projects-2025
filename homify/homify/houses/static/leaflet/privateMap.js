@@ -76,7 +76,6 @@ let basemaps = {
   "Voyager": CartoDB_Voyager,
 }
 
-
 L.control.layers(basemaps, null, {
   position: 'bottomright'
 }).addTo(map);
@@ -84,74 +83,6 @@ L.control.layers(basemaps, null, {
 L.control.zoom({
   position: 'topright'
 }).addTo(map);
-
-//Adding draw functions
-map.pm.addControls({
-  position: 'topright',
-  oneBlock: true,
-  drawCircle: false,
-  drawPolygon: false,
-  drawPolyline: false,
-  drawCircleMarker: false,
-  drawRectangle: false,
-  drawMarker: true,
-  drawText: false,
-  cutPolygon: false,
-  rotateMode: false,
-  editMode: false,
-
-});
-
-map.on('pm:create', e => {
-  if (e.shape === 'Marker') {
-    const layer = e.layer;
-
-    // 1. Add marker immediately for instant feedback
-    layer.addTo(map);
-
-    // 3. Prepare data to send
-    const geojson = layer.toGeoJSON();
-    const data = { geometry: geojson.geometry };
-
-    // 4. Send save request async
-    fetch('/save-location/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken'),
-      },
-      body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 'success') {
-        console.log('Success')
-      } else {
-        // 5b. On failure, update to red and alert
-        console.log('Success')
-      }
-    })
-    .catch(err => {
-      console.error(err);
-    });
-  }
-});
-
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (const cookie of cookies) {
-      const c = cookie.trim();
-      if (c.startsWith(name + '=')) {
-        cookieValue = decodeURIComponent(c.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
-
 
 //Print
 L.easyPrint({	
@@ -162,24 +93,66 @@ L.easyPrint({
   filename: 'homify-map',
 }).addTo(map);
 
-// Modal
-document.querySelectorAll('.edit-bt').forEach(button=> {
-  button.addEventListener('click', () => {
-  const id = button.getAttribute('data-id');
-  console.log(id)
 
-  fetch('/add_location/', {
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest'
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.html) {
-      document.querySelector('#editModal .modal-content').innerHTML = data.html;
-      new bootstrap.Modal(document.getElementById('editModal')).show();
-    }
+const addNewBtn = document.getElementById('add-new-location');
+
+L.DomEvent.on(addNewBtn, 'click', function(e) {
+  // Stop this click from bubbling down to the map
+  L.DomEvent.stopPropagation(e);
+  L.DomEvent.preventDefault(e);
+
+  map.pm.enableDraw('Marker');
+
+  map.once('pm:create', e => {
+    const layer = e.layer;
+    layer.addTo(map);
+
+    map.pm.disableDraw();
+
+    const geojson = layer.toGeoJSON();
+    console.log('Marker placed at:', geojson.geometry);
+
+    // fetch and open modal
+    fetch('/add_location/', {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.html) {
+        document.querySelector('#editModal .modal-content').innerHTML = data.html;
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+      }
+    });
   });
 });
+
   
-})
+
+// // 4. Send save request async
+// fetch('/save-location/', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'X-CSRFToken': getCookie('csrftoken'),
+//   },
+//   body: JSON.stringify(data)
+// })
+// .then(res => res.json())
+// .then(data => {
+//   if (data.status === 'success') {
+//     console.log('Success')
+//   } else {
+//     // 5b. On failure, update to red and alert
+//     console.log('Success')
+//   }
+// })
+// .catch(err => {
+//   console.error(err);
+// });
+
+
+
+
+
+
+

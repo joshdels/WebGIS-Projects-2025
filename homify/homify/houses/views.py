@@ -82,7 +82,38 @@ def add_location(request):
     })
     
 def edit_location(request):
-  if request.method == 'POST':
-    form = LocationForm(request.POST)
+  # add pa ang urls 
+    if request.method == 'POST':
+      form = LocationForm(request.POST)
+      
+      if form.is_valid():
+        location = form.save()
+        
+        # ajax
+        if request.headers.get('x-requested-with') == "XMLHttpRequest":
+            return JsonResponse({'success': True})
+        else:
+          return redirect('location_list')
+    
+      else:
+        if request.headers.get('x-requested-with') == "XMLHttpRequest":
+          html = render_to_string('user/add_location_form.html', {
+            'form': form,
+          }, request=request)
+          return JsonResponse({'success': False, 'html': html})
+
+    else:
+      form = LocationForm()
+      
+      if request.headers.get('x-requested-with') == "XMLHttpRequest":
+        html = render_to_string('user/add_location_form.html', {
+          'form': form,
+        }, request=request)
+        return JsonResponse({'success': False, 'html': html})
+      
+    return render(request, 'user/add_location_form.html', {
+      'form': form,
+    })
+
     
     
