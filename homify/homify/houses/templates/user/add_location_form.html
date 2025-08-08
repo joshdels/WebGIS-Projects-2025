@@ -11,26 +11,27 @@
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
-<div class="modal-body">
-  {% csrf_token %}
-  <div class="mb-3 table-responsive">
-    <table class="table table-bordered table-striped align-middle">
-    {% for field in form %}
-      <tr>
-        <th scope="row" class="w-30"> {{ field.label_tag }} </th>
-        <td > 
-          {{ field }} 
-        </td>
-      </tr>
-    {% endfor  %}
-    </table>
+<form method="POST" id="modalLocationForm">
+  <div class="modal-body">
+    {% csrf_token %}
+    <div class="mb-3 table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+      {% for field in form %}
+        <tr>
+          <th scope="row" class="w-30"> {{ field.label_tag }} </th>
+          <td > 
+            {{ field }} 
+          </td>
+        </tr>
+      {% endfor  %}
+      </table>
+    </div>
+
   </div>
 
-</div>
-
-<div class="modal-footer">
-  <button type="submit" class="btn btn-primary">Add</button>
-  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-</div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+  </div>
 </form>
 

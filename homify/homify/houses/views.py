@@ -24,30 +24,30 @@ def boundary_data(request):
   geojson = serialize('geojson', boundary)
   return HttpResponse(geojson, content_type='application/json')
 
-@csrf_exempt
-def save_location(request):
-  if request.method == 'POST':
-    try:
-      data = json.loads(request.body)
-      geometry = data.get('geometry')
+# @csrf_exempt
+# def save_location(request):
+#   if request.method == 'POST':
+#     try:
+#       data = json.loads(request.body)
+#       geometry = data.get('geometry')
       
-      geom = GEOSGeometry(json.dumps(geometry))
-      location = Locations.objects.create(
-        geom=geom
-      )
-      return JsonResponse({'status': 'success', 'id': location.id})
+#       geom = GEOSGeometry(json.dumps(geometry))
+#       location = Locations.objects.create(
+#         geom=geom
+#       )
+#       return JsonResponse({'status': 'success', 'id': location.id})
     
-    except Exception as e:
-      return JsonResponse({'status': 'error', 'message': str(e)})
+#     except Exception as e:
+#       return JsonResponse({'status': 'error', 'message': str(e)})
     
-  return JsonResponse({'status': 'error', 'message': 'POST request required'}, status=405)
+#   return JsonResponse({'status': 'error', 'message': 'POST request required'}, status=405)
 
 
 def user_dashboard(request):
   locations = Locations.objects.all()
   return render(request, './user/dashboard.html', {'locations':locations})
 
-
+# update guro nako ni to get modal kay conflict sya sa add_location api address
 def add_location(request):
     if request.method == 'POST':
       form = LocationForm(request.POST)
@@ -80,6 +80,7 @@ def add_location(request):
     return render(request, 'user/add_location_form.html', {
       'form': form,
     })
+    
     
 def edit_location(request):
   # add pa ang urls 

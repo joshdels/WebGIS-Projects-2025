@@ -110,45 +110,66 @@ L.DomEvent.on(addNewBtn, 'click', function(e) {
     map.pm.disableDraw();
 
     const geojson = layer.toGeoJSON();
-    console.log('Marker placed at:', geojson.geometry);
+    const addGeometry = geojson.geometry
+    console.log('Marker placed at:', addGeometry);
 
     // fetch and open modal
+    // change guro nako ni to get_modal para dili labad ulo hehe
     fetch('/add_location/', {
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
     .then(response => response.json())
     .then(data => {
       if (data.html) {
+        // target html
         document.querySelector('#editModal .modal-content').innerHTML = data.html;
         new bootstrap.Modal(document.getElementById('editModal')).show();
+        console.log("triggered modal popup")
+
+        // modal dynamic data
+        const form = modalElement.querySelector("#modalLocationForm");
+        
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          //gets the data to be send
+          const formData = new FormData(form);
+
+          formData.append('geometry', JSON.stringify(addGeometry));
+
+          console.log("Data form na i send: ", formData);
+
+          // SEEDING DATA
+          fetch('/save-location/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              console.log('Success')
+            } else {
+              console.log('Error saving:', result.error || result);
+            }
+          })
+          .catch(function(error){
+            console.log("An error occured", error);
+          })
+        })
       }
     });
   });
 });
 
   
+//  fix the code
+// modal
 
-// // 4. Send save request async
-// fetch('/save-location/', {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'X-CSRFToken': getCookie('csrftoken'),
-//   },
-//   body: JSON.stringify(data)
-// })
-// .then(res => res.json())
-// .then(data => {
-//   if (data.status === 'success') {
-//     console.log('Success')
-//   } else {
-//     // 5b. On failure, update to red and alert
-//     console.log('Success')
-//   }
-// })
-// .catch(err => {
-//   console.error(err);
-// });
+
 
 
 
