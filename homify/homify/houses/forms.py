@@ -1,6 +1,6 @@
 from django import forms
 from .models import Location, LocationImages
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, inlineformset_factory
 
 class LocationForm(forms.ModelForm):
   class Meta:
@@ -13,7 +13,8 @@ class LocationImageForm(forms.ModelForm):
     fields = ['image']
     
 # Create a formset (for handling multiple images)
-LocationImageFormSet = modelformset_factory(
+LocationImageFormSet = inlineformset_factory(
+    Location,
     LocationImages,
     form=LocationImageForm,
     extra=1,  # number of empty image forms to display

@@ -1,4 +1,4 @@
-
+{% load static %}
 <form id="modalLocationForm" method="POST" enctype="multipart/form-data" action="{% url 'add-location' %}">
 <div class="modal-header">
 
@@ -18,15 +18,22 @@
       <table class="table table-bordered table-striped align-middle">
       {% for field in form %}
         <tr>
-          <th scope="row" class="w-30"> {{ field.label_tag }} </th>
-          <td > 
-            {{ field }} 
-          </td>
+          <th> {{ field.label_tag }} </th>
+          <td > {{ field }} </td>
         </tr>
       {% endfor  %}
       </table>
     </div>
 
+    <h5>Images</h5>
+    <table>
+      {% for image in imageset%}
+        <tr>
+          <td> {{ image.label_tag }}</td>
+          <td> {{ image.field }}</td>
+        </tr>
+      {% endfor %}
+    </table>
   </div>
 
   <div class="modal-footer">

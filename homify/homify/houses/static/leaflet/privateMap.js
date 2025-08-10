@@ -1,21 +1,21 @@
-let map = L.map('privateMap', {
-  zoomControl: false
+let map = L.map("privateMap", {
+  zoomControl: false,
 }).setView([51.505, -0.09], 13);
 
 // Layers
-$.getJSON('/location-data/', function(data) {
+$.getJSON("/location-data/", function (data) {
   let location = L.geoJSON(data, {
-    pointToLayer: function(feature, latlng) {
+    pointToLayer: function (feature, latlng) {
       return L.circleMarker(latlng, {
         color: "white",
         fillColor: "purple",
         fillOpacity: 1,
         fill: true,
         radius: 6,
-        interactive: true
-      })
+        interactive: true,
+      });
     },
-    onEachFeature: function(feature, layer) {
+    onEachFeature: function (feature, layer) {
       layer.bindPopup(
         `
         <p> Hello Private Users</p> 
@@ -36,74 +36,85 @@ $.getJSON('/location-data/', function(data) {
       //     });
       //   },
       // });
-    }
-  }).addTo(map)
+    },
+  }).addTo(map);
 });
 
-$.getJSON('/boundary-data/', function(data) {
+$.getJSON("/boundary-data/", function (data) {
   let boundary = L.geoJSON(data, {
     style: {
       color: "black",
       fillOpacity: 0,
       weight: 1,
-      dashArray: '2,4'
+      dashArray: "2,4",
     },
-    interactive: false
+    interactive: false,
   }).addTo(map);
-  map.fitBounds(boundary.getBounds())
-})
-
-
-// Basemaps
-let terrain = L.tileLayer('http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}', {
-  maxZoom: 19,
-}).addTo(map);
-
-let satellite = L.tileLayer('http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}', {
-    maxZoom: 19,
-})
-
-
-var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-	subdomains: 'abcd',
-	maxZoom: 20
+  map.fitBounds(boundary.getBounds());
 });
 
+// Basemaps
+let terrain = L.tileLayer(
+  "http://mt0.google.com/vt/lyrs=p&hl=en&x={x}&y={y}&z={z}",
+  {
+    maxZoom: 19,
+  }
+).addTo(map);
+
+let satellite = L.tileLayer(
+  "http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}",
+  {
+    maxZoom: 19,
+  }
+);
+
+var CartoDB_Voyager = L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+  {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: "abcd",
+    maxZoom: 20,
+  }
+);
+
 let basemaps = {
-  "Satellite": satellite,
-  "Terrain": terrain,
-  "Voyager": CartoDB_Voyager,
-}
+  Satellite: satellite,
+  Terrain: terrain,
+  Voyager: CartoDB_Voyager,
+};
 
-L.control.layers(basemaps, null, {
-  position: 'bottomright'
-}).addTo(map);
+L.control
+  .layers(basemaps, null, {
+    position: "bottomright",
+  })
+  .addTo(map);
 
-L.control.zoom({
-  position: 'topright'
-}).addTo(map);
+L.control
+  .zoom({
+    position: "topright",
+  })
+  .addTo(map);
 
 //Print
-L.easyPrint({	
-  title: 'Print',
-	position: 'topright',
+L.easyPrint({
+  title: "Print",
+  position: "topright",
   exportOnly: true,
   hideControlContainer: true,
-  filename: 'homify-map',
+  filename: "homify-map",
 }).addTo(map);
 
+const addNewBtn = document.getElementById("add-new-location");
 
-const addNewBtn = document.getElementById('add-new-location');
-
-L.DomEvent.on(addNewBtn, 'click', function(e) {
+L.DomEvent.on(addNewBtn, "click", function (e) {
   // Stop this click from bubbling down to the map
   L.DomEvent.stopPropagation(e);
   L.DomEvent.preventDefault(e);
 
-  map.pm.enableDraw('Marker');
+  map.pm.enableDraw("Marker");
 
-  map.once('pm:create', e => {
+  map.once("pm:create", (e) => {
     const layer = e.layer;
     layer.addTo(map);
 
@@ -111,82 +122,43 @@ L.DomEvent.on(addNewBtn, 'click', function(e) {
 
     const geojson = layer.toGeoJSON();
     const addGeometry = geojson.geometry;
-    console.log('Marker placed at:', addGeometry);
+    // console.log('Marker placed at:', addGeometry);
 
     // fetch and open modal
-    // change guro nako ni to get_modal para dili labad ulo hehe
-    fetch('/modal-form/', {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    fetch("/modal-form/", {
+      method: "GET",
+      headers: { "X-Requested-With": "XMLHttpRequest" },
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        console.log("success", data);
-      } else {
-        document.querySelector('#addModal .modal-content').innerHTML = data.html;
-        new bootstrap.Modal(document.getElementById('addModal')).show();
-        console.log("triggered modal popup");
-
-        // modal dynamic data
-        const modalElement = document.getElementById('addModal');
-        const form = modalElement.querySelector("#modalLocationForm");
-
-        form.addEventListener('submit', function(e) {
-          e.preventDefault();
-
-          // gets the data to be sent
-          const formData = new FormData(form);
-
-          formData.append('geometry', JSON.stringify(addGeometry));
-
-          console.log("Data form na i send: ", formData);
-
-          // you can add your fetch POST here to send formData
-          // e.g.
-          // fetch('/modal-form/', {
-          //   method: 'POST',
-          //   headers: { 'X-Requested-With': 'XMLHttpRequest' },
-          //   body: formData
-          // })
-          // .then(res => res.json())
-          // .then(resData => { ... })
-        });
-      }
-    })
+      .then((response) => response.json())
+      .then((data) => {
+        document.querySelector("#addModal .modal-content").innerHTML =
+          data.html;
+        new bootstrap.Modal(document.getElementById("addModal")).show();
+      });
   });
 });
-
-
-  
+ 
+// -------------------------------
 //  fix the code
 // modal
 
-          // // SEEDING DATA
-          // fetch('/add-location/', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //     'X-CSRFToken': getCookie('csrftoken'),
-          //   },
-          //   body: formData
-          // })
-          // .then(response => response.json())
-          // .then(data => {
-          //   if (data.status === 'success') {
-          //     console.log('Success')
-          //   } else {
-          //     console.log('Error saving:', result.error || result);
-          //   }
-          // })
-          // .catch(function(error){
-          //   console.log("An error occured", error);
-          // })
-
-
-
-
-
-
-
-
-
+// // SEEDING DATA
+// fetch('/add-location/', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'X-CSRFToken': getCookie('csrftoken'),
+//   },
+//   body: formData
+// })
+// .then(response => response.json())
+// .then(data => {
+//   if (data.status === 'success') {
+//     console.log('Success')
+//   } else {
+//     console.log('Error saving:', result.error || result);
+//   }
+// })
+// .catch(function(error){
+//   console.log("An error occured", error);
+// })
