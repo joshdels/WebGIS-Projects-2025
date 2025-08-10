@@ -6,49 +6,30 @@ from django.core.serializers import serialize
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 import json
-from .models import Boundaries, Locations, LocationsImages
+from .models import Boundary, Location, LocationImages
 from .forms import LocationForm, LocationImageFormSet
 
 # Create your views here.
 def homepage(request):
-  locations = Locations.objects.all()
-  return render(request, './leaflet/index.html', {'locations':locations})
+  locations = Location.objects.all()
+  return render(request, 'leaflet/index.html', {'locations':locations})
 
 def location_data(request):
-  location = Locations.objects.all()
+  location = Location.objects.all()
   geojson = serialize('geojson', location)
   return HttpResponse(geojson, content_type='application/json')
 
 def boundary_data(request):
-  boundary = Boundaries.objects.all()
+  boundary = Boundary.objects.all()
   geojson = serialize('geojson', boundary)
   return HttpResponse(geojson, content_type='application/json')
 
-# @csrf_exempt
-# def save_location(request):
-#   if request.method == 'POST':
-#     try:
-#       data = json.loads(request.body)
-#       geometry = data.get('geometry')
-      
-#       geom = GEOSGeometry(json.dumps(geometry))
-#       location = Locations.objects.create(
-#         geom=geom
-#       )
-#       return JsonResponse({'status': 'success', 'id': location.id})
-    
-#     except Exception as e:
-#       return JsonResponse({'status': 'error', 'message': str(e)})
-    
-#   return JsonResponse({'status': 'error', 'message': 'POST request required'}, status=405)
-
-
 def user_dashboard(request):
-  locations = Locations.objects.all()
-  return render(request, './user/dashboard.html', {'locations':locations})
+  locations = Location.objects.all()
+  return render(request, 'user/dashboard.html', {'locations':locations})
 
-# update guro nako ni to get modal kay conflict sya sa add_location api address
-def add_location(request):
+# im so baddd na kuha naman to gahapon karon error napod
+def get_modalform(request):
     if request.method == 'POST':
       form = LocationForm(request.POST)
       
@@ -63,7 +44,7 @@ def add_location(request):
     
       else:
         if request.headers.get('x-requested-with') == "XMLHttpRequest":
-          html = render_to_string('user/add_location_form.html', {
+          html = render_to_string('user/modalform.html', {
             'form': form,
           }, request=request)
           return JsonResponse({'success': False, 'html': html})
@@ -72,16 +53,16 @@ def add_location(request):
       form = LocationForm()
       
       if request.headers.get('x-requested-with') == "XMLHttpRequest":
-        html = render_to_string('user/add_location_form.html', {
+        html = render_to_string('user/modalform.html', {
           'form': form,
         }, request=request)
         return JsonResponse({'success': False, 'html': html})
       
-    return render(request, 'user/add_location_form.html', {
+    return render(request, 'user/modalform.html', {
       'form': form,
     })
     
-    
+#maya na to 
 def edit_location(request):
   # add pa ang urls 
     if request.method == 'POST':
@@ -116,5 +97,19 @@ def edit_location(request):
       'form': form,
     })
 
-    
-    
+def add_location(request):
+  if request.method == 'POST':
+    form = LocationForm(request.POST)
+    if form.is_valid():
+      location = form.save()
+      imageset = LocationImages(request.POST, request.FILES, instance=location)
+      if imageset.is_valid():
+        imageset.save()
+        return redirect("user_dashboard")
+    else:
+      form = LocationForm()
+      imageset = LocationImages()
+  else:
+    form = LocationForm()
+    imageset = LocationImages()
+  return render(request, 'dashboard.html', {'form': form, 'imageset': imageset})

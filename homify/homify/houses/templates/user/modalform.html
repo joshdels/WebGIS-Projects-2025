@@ -1,17 +1,17 @@
-{% load static %}
-<form id="editForm" method="POST" enctype="multipart/form-data" action="{% url 'add_location' %}">
+
+<form id="modalLocationForm" method="POST" enctype="multipart/form-data" action="{% url 'add-location' %}">
 <div class="modal-header">
+
   <img src="{% static 'leaflet/img/house-storm-svgrepo-com.svg' %}" alt="Logo" width="40" height="50" class="d-inline-block align-text-top">
   <span class="navbar-brand">Homify</span>
   
   <div class="w-100 text-center">
-    <h5 class="mb-0">Edit Property ID</h5>
+    <h5 class="mb-0">Add Property ID</h5>
   </div>
 
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
-<form method="POST" id="modalLocationForm">
   <div class="modal-body">
     {% csrf_token %}
     <div class="mb-3 table-responsive">

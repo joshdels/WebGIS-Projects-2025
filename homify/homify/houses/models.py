@@ -3,7 +3,7 @@ from django.contrib.postgres.indexes import GistIndex
 
 
 # Create your models here.
-class Boundaries(models.Model):
+class Boundary(models.Model):
    adm3_en = models.CharField(max_length=255, null=True, blank=True)
    adm2_en = models.CharField(max_length=255, null=True, blank=True)
    adm1_en = models.CharField(max_length=255, null=True, blank=True)
@@ -13,7 +13,7 @@ class Boundaries(models.Model):
    
    geom = models.MultiPolygonField(srid=4326)
    
-class Locations(models.Model):
+class Location(models.Model):
    address = models.CharField(max_length=300, null=True, blank=True)
    no_units = models.IntegerField(null=True, blank=True)
    status = models.CharField(max_length=255, null=True, blank=True) 
@@ -34,6 +34,6 @@ class Locations(models.Model):
          GistIndex(fields=["geom"]),
       ]
 
-class LocationsImages(models.Model):
-   location = models.ForeignKey(Locations, on_delete=models.CASCADE, related_name='images')
+class LocationImages(models.Model):
+   location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='images')
    image = models.ImageField(upload_to='location_images/')

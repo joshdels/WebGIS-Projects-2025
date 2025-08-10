@@ -3,7 +3,7 @@ let map = L.map('privateMap', {
 }).setView([51.505, -0.09], 13);
 
 // Layers
-$.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
+$.getJSON('/location-data/', function(data) {
   let location = L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
       return L.circleMarker(latlng, {
@@ -40,7 +40,7 @@ $.getJSON('http://127.0.0.1:8000/location-data/', function(data) {
   }).addTo(map)
 });
 
-$.getJSON('http://127.0.0.1:8000/boundary-data/', function(data) {
+$.getJSON('/boundary-data/', function(data) {
   let boundary = L.geoJSON(data, {
     style: {
       color: "black",
@@ -110,64 +110,77 @@ L.DomEvent.on(addNewBtn, 'click', function(e) {
     map.pm.disableDraw();
 
     const geojson = layer.toGeoJSON();
-    const addGeometry = geojson.geometry
+    const addGeometry = geojson.geometry;
     console.log('Marker placed at:', addGeometry);
 
     // fetch and open modal
     // change guro nako ni to get_modal para dili labad ulo hehe
-    fetch('/add_location/', {
+    fetch('/modal-form/', {
       headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
     .then(response => response.json())
     .then(data => {
-      if (data.html) {
-        // target html
-        document.querySelector('#editModal .modal-content').innerHTML = data.html;
-        new bootstrap.Modal(document.getElementById('editModal')).show();
-        console.log("triggered modal popup")
+      if (data.success) {
+        console.log("success", data);
+      } else {
+        document.querySelector('#addModal .modal-content').innerHTML = data.html;
+        new bootstrap.Modal(document.getElementById('addModal')).show();
+        console.log("triggered modal popup");
 
         // modal dynamic data
+        const modalElement = document.getElementById('addModal');
         const form = modalElement.querySelector("#modalLocationForm");
-        
+
         form.addEventListener('submit', function(e) {
           e.preventDefault();
 
-          //gets the data to be send
+          // gets the data to be sent
           const formData = new FormData(form);
 
           formData.append('geometry', JSON.stringify(addGeometry));
 
           console.log("Data form na i send: ", formData);
 
-          // SEEDING DATA
-          fetch('/save-location/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': getCookie('csrftoken'),
-            },
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'success') {
-              console.log('Success')
-            } else {
-              console.log('Error saving:', result.error || result);
-            }
-          })
-          .catch(function(error){
-            console.log("An error occured", error);
-          })
-        })
+          // you can add your fetch POST here to send formData
+          // e.g.
+          // fetch('/modal-form/', {
+          //   method: 'POST',
+          //   headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          //   body: formData
+          // })
+          // .then(res => res.json())
+          // .then(resData => { ... })
+        });
       }
-    });
+    })
   });
 });
+
 
   
 //  fix the code
 // modal
+
+          // // SEEDING DATA
+          // fetch('/add-location/', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     'X-CSRFToken': getCookie('csrftoken'),
+          //   },
+          //   body: formData
+          // })
+          // .then(response => response.json())
+          // .then(data => {
+          //   if (data.status === 'success') {
+          //     console.log('Success')
+          //   } else {
+          //     console.log('Error saving:', result.error || result);
+          //   }
+          // })
+          // .catch(function(error){
+          //   console.log("An error occured", error);
+          // })
 
 
 
