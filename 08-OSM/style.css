@@ -4,5 +4,18 @@ html, body {
 }
 
 #map { 
+  position: relative;
   height: 100vh;
+}
+
+
+#searchPanel {
+  position: absolute;
+  z-index: 1000;
+  top: 20px;     
+  right: 20px; 
+  padding: 30px;
+  width: 350px;
+  background-color: rgb(250, 250, 250);
+  text-align: center;
 }
