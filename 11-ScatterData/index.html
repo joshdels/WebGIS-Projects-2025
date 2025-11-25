@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DeckGL CSV Points</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.css" />
+  <script src="https://unpkg.com/maplibre-gl@5.8.0/dist/maplibre-gl.js"></script>
+  <script src="https://unpkg.com/deck.gl@8.9.33/dist.min.js"></script>
+  <style>
+    html, body, #map { height: 100%; margin: 0; padding: 0; }
+    #map-title {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="map-title">MapLibre + DeckGL - Points</div>
+
+  <script>
+    const map = new maplibregl.Map({
+      container: "map",
+      style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+      center: [-0.198, 51.505], // center over London
+      zoom: 11
+    });
+
+    async function loadCSVPoints() {
+      const text = await fetch("points.csv").then(r => r.text());
+      const lines = text.trim().split("\n");
+
+      // Convert CSV to GeoJSON-like features
+      const features = lines.map(line => {
+        const [lon, lat] = line.split(",").map(Number);
+        return {
+          geometry: { type: "Point", coordinates: [lon, lat] },
+          properties: {}
+        };
+      });
+
+      const scatter = new deck.ScatterplotLayer({
+        id: "csv-points",
+        data: features,
+        getPosition: d => d.geometry.coordinates,
+        getFillColor: [0, 150, 255],
+        getRadius: 1,
+        radiusUnits: "pixels",
+        pickable: false
+      });
+
+      const overlay = new deck.MapboxOverlay({ layers: [scatter] });
+      map.addControl(overlay);
+    }
+
+    map.on("load", loadCSVPoints);
+  </script>
+</body>
+</html>
