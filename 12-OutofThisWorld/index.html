@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simple Solar System Map (MapLibre)</title>
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial}
+    #map{position:absolute;inset:0}
+    .controls{position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.9);padding:8px;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+    .controls button{display:block;margin:4px 0;padding:6px 8px;border:0;background:#0b74de;color:#fff;border-radius:4px;cursor:pointer}
+    .legend{position:absolute;right:8px;top:8px;background:rgba(0,0,0,0.6);color:#fff;padding:8px;border-radius:6px;font-size:13px}
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="controls">
+    <button id="view-solar">Solar System View</button>
+    <small style="display:block;margin-top:6px;color:#333">Scale: 1 AU → 20° (pseudo-projection)</small>
+  </div>
+  <div class="legend">Sun (yellow) • Earth (blue) • Moon (light) • Mars (red)</div>
+
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <script>
+    // Very simple Solar System demo using MapLibre.
+    // This uses a *pseudo-projection*: we map heliocentric AU coordinates
+    // to lon/lat degrees by a constant scale. This is NOT accurate for
+    // real astrodynamics but is enough for a visual, zoomable demo.
+
+    // SETTINGS
+    const DEG_PER_AU = 20; // 1 AU equals this many degrees. Adjust for zoom feel.
+    const CENTER_LON = 0;  // center of the map in our pseudo-lon/lat space
+    const CENTER_LAT = 0;
+
+    // Simple planet definitions: mean orbital radius in AU, orbital period in days
+    const bodies = {
+      sun: { radiusAU: 0.0, color: '#ffcc33', period: 1, size_px: 30 },
+      earth: { radiusAU: 1.0, periodDays: 365.25, color: '#2a7fff', size_px: 12 },
+      moon: { radiusAU: 0.00257, periodDays: 27.3, color: '#ddd', size_px: 6, parent: 'earth' },
+      mars: { radiusAU: 1.524, periodDays: 687, color: '#ff6b4a', size_px: 10 }
+    };
+
+    // Helper: convert (xAU,yAU) to pseudo lon/lat
+    function auToLonLat(xAU, yAU){
+      return [CENTER_LON + xAU * DEG_PER_AU, CENTER_LAT + yAU * DEG_PER_AU];
+    }
+
+    // Create a very small MapLibre style using Carto Positron as base
+    const map = new maplibregl.Map({
+      container: 'map',
+      zoom: 3,
+      style: {
+        version: 8,
+        sources: {},
+        layers: [
+          {
+            id: "background",
+            type: "background",
+            paint: {
+              "background-color": "#000000"
+            }
+          }
+        ],
+        glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf"
+      }
+    });
+
+    // When map loads, add our sources & layers for orbits and bodies
+    map.on('load', () => {
+      // Orbits (as lines) and bodies (as points) are stored in GeoJSON sources
+      map.addSource('orbits', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+      map.addSource('bodies', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+
+      // Orbit layer: simple line
+      map.addLayer({
+        id: 'orbit-lines',
+        type: 'line',
+        source: 'orbits',
+        paint: { 'line-color': '#888', 'line-width': 1 }
+      });
+
+      // Body layer: circles sized by pixel radius from properties
+      map.addLayer({
+        id: 'bodies-circles',
+        type: 'circle',
+        source: 'bodies',
+        paint: {
+          'circle-radius': ['get', 'px'],
+          'circle-color': ['get', 'color'],
+          'circle-stroke-color': '#111',
+          'circle-stroke-width': 0.5,
+          'circle-opacity': 0.95
+        }
+      });
+
+      // Labels
+      map.addLayer({
+        id: 'bodies-labels',
+        type: 'symbol',
+        source: 'bodies',
+        layout: {
+          'text-field': ['get','name'],
+          'text-size': 12,
+          'text-offset': [0, 1.2]
+        },
+        paint: { 'text-color': '#fff' }
+      });
+
+      // Precompute orbit polylines for Earth, Mars (simple circles in plane)
+      const orbitFeatures = [];
+      ['earth','mars'].forEach(k => {
+        const r = bodies[k].radiusAU;
+        const coords = [];
+        for(let i=0;i<720;i++){
+          const theta = (i/128) * Math.PI * 2;
+          const x = r * Math.cos(theta);
+          const y = r * Math.sin(theta);
+          coords.push(auToLonLat(x,y));
+        }
+        orbitFeatures.push({ type: 'Feature', geometry: { type: 'LineString', coordinates: coords }, properties: { body: k } });
+      });
+
+      map.getSource('orbits').setData({ type: 'FeatureCollection', features: orbitFeatures });
+
+      // Initialize bodies as GeoJSON features (positions are updated by animation)
+      const bodyFeatures = Object.entries(bodies).map(([id, b]) => ({
+        type: 'Feature', geometry: { type: 'Point', coordinates: auToLonLat(b.radiusAU, 0) },
+        properties: { id, name: id.charAt(0).toUpperCase() + id.slice(1), color: b.color, px: b.size_px }
+      }));
+      map.getSource('bodies').setData({ type: 'FeatureCollection', features: bodyFeatures });
+
+      // Start animation loop
+      let start = Date.now();
+      function animate(){
+        const tDays = (Date.now() - start) / 1000; // use seconds as "days" for faster motion
+
+        // update each body's position
+        const newFeatures = bodyFeatures.map(f => {
+          const id = f.properties.id;
+          const b = bodies[id];
+          let x=0,y=0;
+
+          if(id === 'sun'){
+            x = 0; y = 0;
+          } else if(b.parent){
+            // moon orbits around its parent (we only handle moon around earth here)
+            const parent = bodies[b.parent];
+            const parentAngle = ((tDays) / (parent.periodDays || 365.25)) * Math.PI*2;
+            const px = parent.radiusAU * Math.cos(parentAngle);
+            const py = parent.radiusAU * Math.sin(parentAngle);
+
+            const angle = ((tDays) / b.periodDays) * Math.PI*2;
+            x = px + b.radiusAU * Math.cos(angle);
+            y = py + b.radiusAU * Math.sin(angle);
+          } else {
+            // planet orbit around sun (circular simplified)
+            const angle = ((tDays) / (b.periodDays)) * Math.PI*2;
+            x = b.radiusAU * Math.cos(angle);
+            y = b.radiusAU * Math.sin(angle);
+          }
+
+          return { ...f, geometry: { type: 'Point', coordinates: auToLonLat(x,y) } };
+        });
+
+        map.getSource('bodies').setData({ type: 'FeatureCollection', features: newFeatures });
+        requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    });
+
+    // Simple UI controls to jump between views
+    document.getElementById('view-solar').addEventListener('click', ()=>{
+      map.easeTo({ center: [0,0], zoom: 3, duration: 1000 });
+    });
+    document.getElementById('view-earth').addEventListener('click', ()=>{
+      const earthPos = auToLonLat(bodies.earth.radiusAU, 0);
+      map.easeTo({ center: earthPos, zoom: 5, duration: 1000 });
+    });
+    document.getElementById('view-moon').addEventListener('click', ()=>{
+      const earthPos = auToLonLat(bodies.earth.radiusAU, 0);
+      map.easeTo({ center: earthPos, zoom: 7, duration: 1000 });
+    });
+    document.getElementById('view-mars').addEventListener('click', ()=>{
+      const marsPos = auToLonLat(bodies.mars.radiusAU, 0);
+      map.easeTo({ center: marsPos, zoom: 4.5, duration: 1000 });
+    });
+  </script>
+</body>
+</html>
