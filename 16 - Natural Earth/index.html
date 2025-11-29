@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Natural Earth</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  #map { height: 100vh; }
+  html, body {
+    padding: 0;
+    margin: 0;
+  }
+
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// Initialize map
+const map = L.map('map');
+
+// Add OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// Load your GeoJSON
+fetch('./protected.json') // replace with your GeoJSON path
+  .then(res => res.json())
+  .then(data => {
+    const geojsonLayer = L.geoJSON(data, {
+      style: {
+        color: '#006400',     
+        weight: 1,
+        fillColor: '#32CD32',  
+        fillOpacity: 0.5
+      },
+      onEachFeature: (feature, layer) => {
+        // Show unit_name in popup
+        if (feature.properties.unit_name) {
+          layer.bindPopup(`
+            <strong>${feature.properties.unit_name}</strong><br>
+            Region: ${feature.properties.nps_region || 'N/A'}
+          `);
+        }
+      }
+    }).addTo(map);
+
+    // Zoom map to fit the GeoJSON layer bounds
+    map.fitBounds(geojsonLayer.getBounds());
+  })
+  .catch(err => console.error("Failed to load GeoJSON:", err));
+</script>
+</body>
+</html>

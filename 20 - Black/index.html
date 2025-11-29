@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Black</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- MapLibre GL CSS -->
+<script src="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.css" rel="stylesheet" />
+
+<style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    center: [0, 0],
+    zoom: 2
+  });
+
+  map.on('load', () => {
+    // Add GeoJSON source
+    map.addSource('railroads', {
+      type: 'geojson',
+      data: './railroads.geojson' // your file path
+    });
+
+    // Add line layer for railroads
+    map.addLayer({
+      id: 'railroads-line',
+      type: 'line',
+      source: 'railroads',
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': 'white', 
+        'line-width': 2,
+        'line-opacity': 0.8
+      }
+    })
+  });
+</script>
+
+</body>
+</html>

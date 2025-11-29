@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MapLibre Philippine Cities</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- MapLibre GL CSS -->
+<script src="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.css" rel="stylesheet" />
+
+<style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    center: [121.0, 12.88],
+    zoom: 5
+  });
+
+  map.on('load', () => {
+    // Load external GeoJSON files
+    map.addSource('province', {
+      type: 'geojson',
+      data: './phils1.json'
+    });
+
+    map.addSource('cities', {
+      type: 'geojson',
+      data: './phils2.json' 
+    });
+
+    // Province labels: only visible when zoom >= 5
+    map.addLayer({
+      id: 'province-labels',
+      type: 'symbol',
+      source: 'province',
+      minzoom: 5,       // show from zoom 5
+      layout: {
+        'text-field': ['get', 'NAME_1'],
+        'text-size': 20,
+        'text-offset': [0, 0],
+        'text-anchor': 'top'
+      },
+      paint: {
+        'text-color': '#ff0000'
+      }
+    });
+
+    // City labels: only visible when zoom >= 7
+    map.addLayer({
+      id: 'city-labels',
+      type: 'symbol',
+      source: 'cities',
+      minzoom: 6,      // show from zoom 7
+      layout: {
+        'text-field': ['get', 'NAME_2'],
+        'text-size': 16,
+        'text-offset': [0, 1.2],
+        'text-anchor': 'top'
+      },
+      paint: {
+        'text-color': 'white'
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

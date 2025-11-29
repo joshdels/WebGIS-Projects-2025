@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ports Hover</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- MapLibre GL CSS -->
+<script src="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.css" rel="stylesheet" />
+
+<style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    center: [121.0, 12.88],
+    zoom: 5
+  });
+
+  map.on('load', () => {
+    // Load GeoJSON source
+    map.addSource('ports', {
+      type: 'geojson',
+      data: './ports.geojson'
+    });
+
+    // Port points layer
+    map.addLayer({
+      id: 'port-points',
+      type: 'circle',
+      source: 'ports',
+      paint: {
+        'circle-radius': 5,
+        'circle-color': 'blue',
+        'circle-stroke-color': '#ffffff',
+        'circle-stroke-width': 1
+      }
+    });
+
+    // Create a single popup but don't add it yet
+    const popup = new maplibregl.Popup({
+      closeButton: false,
+      closeOnClick: false
+    });
+
+    // Hover interaction
+    map.on('mousemove', 'port-points', (e) => {
+      map.getCanvas().style.cursor = 'pointer'; // change cursor
+      const portName = e.features[0].properties.name;
+      popup.setLngLat(e.lngLat)
+           .setHTML(`<strong>${portName}</strong>`)
+           .addTo(map);
+    });
+
+    // Remove popup when not hovering
+    map.on('mouseleave', 'port-points', () => {
+      map.getCanvas().style.cursor = '';
+      popup.remove();
+    });
+  });
+</script>
+
+</body>
+</html>

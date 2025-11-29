@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Colorful Philippine Boundaries - MapLibre</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- MapLibre GL CSS -->
+<script src="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@^5.13.0/dist/maplibre-gl.css" rel="stylesheet" />
+
+<style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    center: [121.0, 12.88],
+    zoom: 5
+  });
+
+  map.on('load', () => {
+    // Load GeoJSON sources
+    map.addSource('province', {
+      type: 'geojson',
+      data: './phils1.json'
+    });
+
+    map.addSource('cities', {
+      type: 'geojson',
+      data: './phils2.json'
+    });
+
+    // Province fill layer (colorful)
+    map.addLayer({
+      id: 'province-fill',
+      type: 'fill',
+      source: 'province',
+      layout: {},
+      paint: {
+        'fill-color': [
+          'match',
+          ['get', 'NAME_1'],
+          'Metro Manila', '#e41a1c',
+          'Cebu', '#377eb8',
+          'Davao', '#4daf4a',
+          'Laguna', '#984ea3',
+          'Batangas', '#ff7f00',
+          '#ffff33' // fallback color
+        ],
+        'fill-opacity': 0.5
+      }
+    });
+
+    // Province outline
+    map.addLayer({
+      id: 'province-outline',
+      type: 'line',
+      source: 'province',
+      layout: {},
+      paint: {
+        'line-color': '#ffffff',
+        'line-width': 3
+      }
+    });
+
+    // Province outline
+    map.addLayer({
+      id: 'cities-outline',
+      type: 'line',
+      source: 'cities',
+      layout: {},
+      paint: {
+        'line-color': '#ffffff',
+        'line-width': 1,
+        'line-dasharray': [2, 4]
+      }
+    });
+
+  });
+</script>
+
+</body>
+</html>

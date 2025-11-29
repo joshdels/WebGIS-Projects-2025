@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Leaflet PH Destinations Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Font Awesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+html, body, #map { height: 100%; margin: 0; padding: 0; }
+
+/* Marker pin shape */
+.marker-pin {
+    width: 40px;
+    height: 40px;
+    border-radius: 50% 50% 50% 0;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -20px 0 0 -20px;
+}
+
+/* Inner white circle */
+.marker-pin::after {
+    content: '';
+    width: 28px;
+    height: 28px;
+    margin: 6px 0 0 6px;
+    background: #fff;
+    position: absolute;
+    border-radius: 50%;
+}
+
+/* Icon alignment */
+.custom-div-icon i {
+    position: absolute;
+    width: 28px;
+    font-size: 20px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    text-align: center;
+    line-height: 28px;
+    color: black; /* icon color */
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+// Initialize Leaflet map centered in Manila
+const map = L.map('map').setView([12.8797, 121.7740], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+// Famous Philippine destinations
+const places = [
+    { coords: [14.5995, 120.9842], icon: 'fa-city', color: '#c30b82', label: "Manila" },
+    { coords: [10.3157, 123.8854], icon: 'fa-water', color: '#1e90ff', label: "Cebu" },
+    { coords: [9.7089, 118.7326], icon: 'fa-mountain', color: '#ffa500', label: "Puerto Princesa, Palawan" },
+    { coords: [11.9256, 121.9400], icon: 'fa-umbrella-beach', color: '#00bfa5', label: "Boracay, Aklan" },
+    { coords: [16.4023, 120.5960], icon: 'fa-hiking', color: '#ff4500', label: "Baguio City" },
+    { coords: [7.1907, 125.4553], icon: 'fa-water-ladder', color: '#5f9ea0', label: "Davao City" }
+];
+
+// Add markers
+places.forEach(p => {
+    const icon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div style="background-color:${p.color};" class="marker-pin"></div>
+               <i class="fa-solid ${p.icon}"></i>`,
+        iconSize: [40, 40],
+        iconAnchor: [20, 40]
+    });
+
+    L.marker(p.coords, { icon })
+     .addTo(map)
+     .bindPopup(p.label, { offset: [0, -30], autoPan: true });
+});
+</script>
+</body>
+</html>
