@@ -1,0 +1,34 @@
+#map {
+  height: 100%;
+}
+
+html, body, h1, h3, p{
+  padding: 0px;
+  margin: 0px;
+  background-color: black;
+  color: white;
+}
+
+#title {
+  text-align: center;
+  color: white;
+  font-family: sans-serif;
+}
+
+#title h1 {
+  text-transform: uppercase;
+  letter-spacing: 5;
+  font-weight: bolder;
+  font-size: 40px;
+  letter-spacing: 10px;
+}
+
+#title p {
+  line-height: 20px;
+  font-weight: lighter;
+}
+
+#note {
+  color: white;
+  font-weight: lighter
+}
